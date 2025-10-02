@@ -80,8 +80,8 @@ export const theme = createTheme({
 		},
 		defaults: {
 			fontFamily: 'Zain_400Regular',
-			fontSize: 14,
-			lineHeight: 20,
+			fontSize: 20,
+			lineHeight: 22,
 			color: 'text',
 		},
 	},
