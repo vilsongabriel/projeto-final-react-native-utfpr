@@ -1,5 +1,5 @@
+import { Icon } from '@/components'
 import { useAppTheme } from '@/hooks/useAppTheme'
-import Ionicons from '@expo/vector-icons/Ionicons'
 import { Tabs } from 'expo-router'
 
 export default function TabsLayout() {
@@ -19,7 +19,7 @@ export default function TabsLayout() {
 				options={{
 					title: 'Novo',
 					tabBarIcon: ({ color, size }) => (
-						<Ionicons name="add-circle-outline" size={size} color={color} />
+						<Icon name="add-circle-outline" size={size} color={color} />
 					),
 				}}
 			/>
@@ -28,7 +28,7 @@ export default function TabsLayout() {
 				options={{
 					title: 'Histórico',
 					tabBarIcon: ({ color, size }) => (
-						<Ionicons name="time-outline" size={size} color={color} />
+						<Icon name="time-outline" size={size} color={color} />
 					),
 				}}
 			/>
