@@ -48,27 +48,27 @@ export const theme = createTheme({
 	},
 	textVariants: {
 		title: {
-			fontFamily: 'DynaPuff_600SemiBold',
+			fontFamily: 'DynaPuff_500Medium',
 			fontSize: 32,
 			lineHeight: 38,
 			color: 'text',
 		},
 		subtitle: {
-			fontFamily: 'DynaPuff_500Medium',
+			fontFamily: 'DynaPuff_400Medium',
 			fontSize: 20,
 			lineHeight: 26,
 			color: 'subtleText',
 		},
 		body: {
 			fontFamily: 'Zain_400Regular',
-			fontSize: 16,
+			fontSize: 20,
 			lineHeight: 22,
 			color: 'text',
 		},
 		buttonLabel: {
 			fontFamily: 'Zain_700Bold',
-			fontSize: 16,
-			lineHeight: 20,
+			fontSize: 22,
+			lineHeight: 30,
 			color: 'buttonText',
 			textAlign: 'center',
 		},

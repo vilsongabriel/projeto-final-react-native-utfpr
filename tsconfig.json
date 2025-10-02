@@ -4,8 +4,9 @@
 		"strict": true,
 		"noImplicitAny": true,
 		"strictNullChecks": true,
+		"baseUrl": "./",
 		"paths": {
-			"@/*": ["./*"]
+			"@/*": ["src/*"]
 		}
 	},
 	"include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"]

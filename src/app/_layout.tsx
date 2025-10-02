@@ -1,33 +1,28 @@
+import { useAppFonts } from '@/hooks/useAppFonts'
+import { ThemeProvider } from '@/theme'
 import { Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
 import { useEffect } from 'react'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
-import { useAppFonts } from '../hooks/useAppFonts'
-import { ThemeProvider } from '../theme'
 
 export default function RootLayout() {
 	const { loaded, error } = useAppFonts()
 
 	useEffect(() => {
-		void SplashScreen.preventAutoHideAsync()
+		SplashScreen.preventAutoHideAsync()
 	}, [])
 
 	useEffect(() => {
-		if (loaded) {
-			void SplashScreen.hideAsync()
-		}
+		if (!loaded) return
+		SplashScreen.hideAsync()
 	}, [loaded])
 
 	useEffect(() => {
-		if (error) {
-			throw error
-		}
+		if (error) throw error
 	}, [error])
 
-	if (!loaded) {
-		return null
-	}
+	if (!loaded) return null
 
 	return (
 		<GestureHandlerRootView style={{ flex: 1 }}>
