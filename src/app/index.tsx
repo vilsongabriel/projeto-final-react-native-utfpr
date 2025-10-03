@@ -36,5 +36,5 @@ export default function Index() {
 		)
 	}
 
-	return <Redirect href={welcomeCompleted ? '/(tabs)/main' : '/welcome'} />
+	return <Redirect href={welcomeCompleted ? '/main' : '/welcome'} />
 }

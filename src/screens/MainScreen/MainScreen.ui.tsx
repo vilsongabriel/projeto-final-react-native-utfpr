@@ -24,8 +24,14 @@ export const MainScreenUI = ({
 	onContinue,
 }: MainScreenUIProps) => {
 	return (
-		<Screen flex={1} paddingHorizontal="xl" paddingTop="xxl" gap="xxl">
-			<Logo mode="full" alignSelf="center" width={120} />
+		<Screen flex={1} paddingHorizontal="xl" gap="xxl">
+			<Logo
+				mode="full"
+				alignSelf="center"
+				width={120}
+				position="absolute"
+				marginTop="xxl"
+			/>
 			<Box style={mainScreenStyles.content} justifyContent="center" gap="xl">
 				<HighlightableText
 					text={'O que vamos **revisar** hoje?'}

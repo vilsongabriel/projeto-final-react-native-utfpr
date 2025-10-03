@@ -20,12 +20,6 @@ export const slides: WelcomeSlide[] = [
 		description:
 			'A inteligência artificial prepara questões únicas para cada tema, garantindo variedade e aprendizado contínuo.',
 	},
-	{
-		key: 'results',
-		title: 'Aprenda com os resultados',
-		description:
-			'Acompanhe seu desempenho, reveja cada questionário salvo e refaça quando quiser para medir sua evolução.',
-	},
 ]
 
 export const WelcomeScreen = () => {

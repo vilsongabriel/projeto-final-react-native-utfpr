@@ -42,7 +42,7 @@ export const useWelcomeScreen = (
 		setIsCompleting(true)
 		try {
 			await storage.setString(storageKeys.WELCOME_SCREEN_COMPLETED, 'true')
-			router.replace('/(tabs)/main')
+			router.replace('/main')
 		} catch (error) {
 			console.error('Failed to complete welcome flow', error)
 			Alert.alert(

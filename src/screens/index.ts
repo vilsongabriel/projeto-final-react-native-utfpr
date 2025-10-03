@@ -1,4 +1,3 @@
-export * from './HistoryScreen'
 export * from './MainScreen/MainScreen'
 export * from './NewQuizScreen'
 export * from './QuizResultScreen'
