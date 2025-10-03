@@ -23,6 +23,12 @@ const DEFAULT_COLORS: Required<LogoColors> = {
 	text: 'muted',
 }
 
+const SYMBOL_DEFAULT_WIDTH = 67
+const SYMBOL_DEFAULT_HEIGHT = 70
+
+const WORDMARK_DEFAULT_WIDTH = 105
+const WORDMARK_DEFAULT_HEIGHT = 46
+
 export const Logo = ({
 	mode = 'full',
 	colors,
@@ -41,18 +47,102 @@ export const Logo = ({
 	const resolvedPrimary = resolveColor(mergedColors.symbolPrimary, theme)
 	const resolvedSecondary = resolveColor(mergedColors.symbolSecondary, theme)
 	const resolvedText = resolveColor(mergedColors.text, theme)
-	const containerGap = gap ?? (showSymbol && showText ? 'm' : undefined)
+	const fullDefaultWidth = SYMBOL_DEFAULT_WIDTH + WORDMARK_DEFAULT_WIDTH
+	const fullDefaultHeight = Math.max(
+		SYMBOL_DEFAULT_HEIGHT,
+		WORDMARK_DEFAULT_HEIGHT,
+	)
+
+	const baseWidth = (() => {
+		if (showSymbol && showText) return fullDefaultWidth
+		if (showSymbol) return SYMBOL_DEFAULT_WIDTH
+		return WORDMARK_DEFAULT_WIDTH
+	})()
+
+	const baseHeight = (() => {
+		if (showSymbol && showText) return fullDefaultHeight
+		if (showSymbol) return SYMBOL_DEFAULT_HEIGHT
+		return WORDMARK_DEFAULT_HEIGHT
+	})()
+
+	const providedWidth = boxProps.width
+	const providedHeight = boxProps.height
+	const hasNumericWidth = typeof providedWidth === 'number'
+	const hasNumericHeight = typeof providedHeight === 'number'
+
+	let computedWidth = baseWidth
+	let computedHeight = baseHeight
+
+	if (hasNumericWidth) {
+		computedWidth = providedWidth as number
+		computedHeight = hasNumericHeight
+			? (providedHeight as number)
+			: ((providedWidth as number) * baseHeight) / baseWidth
+	} else if (hasNumericHeight) {
+		computedHeight = providedHeight as number
+		computedWidth = ((providedHeight as number) * baseWidth) / baseHeight
+	}
+
+	const containerWidth = hasNumericWidth ? providedWidth : computedWidth
+	const containerHeight = hasNumericHeight ? providedHeight : computedHeight
+
+	const containerGapProp: BoxProps['gap'] = gap
+
+	let dynamicGap: number | undefined
+
+	if (gap === undefined && showSymbol && showText) {
+		const defaultGap = theme.spacing.s
+		const containerHeightNumber =
+			typeof containerHeight === 'number' ? containerHeight : undefined
+		const containerWidthNumber =
+			typeof containerWidth === 'number' ? containerWidth : undefined
+		let ratio = 1
+		if (containerHeightNumber !== undefined) {
+			ratio = containerHeightNumber / fullDefaultHeight
+		} else if (containerWidthNumber !== undefined) {
+			ratio = containerWidthNumber / fullDefaultWidth
+		}
+		dynamicGap = defaultGap * ratio
+	}
+
+	const symbolFlexGrow = showSymbol && showText ? SYMBOL_DEFAULT_WIDTH : 1
+	const wordmarkFlexGrow = showSymbol && showText ? WORDMARK_DEFAULT_WIDTH : 1
 
 	return (
 		<Box
 			flexDirection="row"
 			alignItems="center"
-			gap={containerGap}
+			gap={containerGapProp}
+			width={containerWidth}
+			height={containerHeight}
 			{...boxProps}>
 			{showSymbol ? (
-				<LogoSymbol primary={resolvedPrimary} secondary={resolvedSecondary} />
+				<Box
+					flexGrow={symbolFlexGrow}
+					flexBasis={0}
+					height="100%"
+					aspectRatio={SYMBOL_DEFAULT_WIDTH / SYMBOL_DEFAULT_HEIGHT}
+					justifyContent="center"
+					alignItems="center"
+					style={
+						dynamicGap !== undefined && gap === undefined && showText
+							? { marginRight: dynamicGap }
+							: undefined
+					}>
+					<LogoSymbol primary={resolvedPrimary} secondary={resolvedSecondary} />
+				</Box>
 			) : null}
-			{showText ? <LogoWordmark textColor={resolvedText} /> : null}
+			{showText ? (
+				<Box
+					flexGrow={wordmarkFlexGrow}
+					flexBasis={0}
+					height="100%"
+					aspectRatio={WORDMARK_DEFAULT_WIDTH / WORDMARK_DEFAULT_HEIGHT}
+					justifyContent="center"
+					alignItems="center">
+					<LogoWordmark textColor={resolvedText} />
+				</Box>
+			) : null}
 		</Box>
 	)
 }
@@ -63,7 +153,12 @@ type LogoSymbolProps = {
 }
 
 const LogoSymbol = ({ primary, secondary }: LogoSymbolProps) => (
-	<Svg width={67} height={70} viewBox="0 0 67 70" fill="none">
+	<Svg
+		width="100%"
+		height="100%"
+		viewBox="0 0 67 70"
+		fill="none"
+		preserveAspectRatio="xMidYMid meet">
 		<Path
 			d="M30.8814 0.0954871C31.7373 0.0547395 32.6024 -0.000528338 33.458 3.81392e-06C34.0912 0.000383922 34.7328 0.0466812 35.3668 0.0663708C36.3511 0.109171 37.4082 0.225712 38.3851 0.376083C38.9379 0.461227 39.5082 0.608329 40.0579 0.699099L40.5098 0.80743C41.5534 1.03861 43.5083 1.57555 44.4828 2.00097C46.7508 2.87162 48.9059 4.01071 50.9022 5.39382C51.7382 5.97873 52.4887 6.59853 53.2989 7.2077C53.791 7.23818 54.2773 7.26547 54.7673 7.31816C59.5394 7.83123 62.8613 11.8982 62.5571 16.6215C62.508 17.3863 62.3896 18.1451 62.2033 18.8886C64.784 22.7541 66.1573 26.7701 66.6425 31.3821C66.7679 32.5744 66.9208 34.1799 66.7986 35.3759C65.6909 34.8314 64.6844 34.213 63.5169 33.6573C65.7571 38.4152 65.7307 42.9671 63.9866 47.9088C63.5116 49.2547 62.4193 51.6894 61.5034 52.7844C60.9273 51.4832 60.4633 50.5398 59.769 49.2919C58.7656 54.481 55.7402 59.0602 51.3573 62.0237C50.3814 62.6818 49.155 63.3575 48.065 63.7993C48.0116 62.653 47.99 61.5053 48.0004 60.3578C47.8692 60.531 47.681 60.7653 47.5653 60.9411C47.4694 61.0624 47.2316 61.3487 47.1609 61.466C46.3785 62.3996 45.8051 63.0136 44.8615 63.8096C44.3284 64.2869 43.8132 64.6293 43.2575 65.0593C43.1311 65.1371 42.4895 65.5283 42.4165 65.6127C41.7416 65.9642 41.1327 66.3621 40.4278 66.7148C38.4051 67.7038 36.2812 68.4716 34.0931 69.0047C33.641 69.0543 33.4362 69.0752 32.9924 69.0015C31.7231 68.7779 29.6931 68.0923 28.4883 67.6341L28.2982 67.5634C27.6788 67.3176 27.0674 67.0522 26.4647 66.7677C26.3774 66.7207 26.2877 66.683 26.1972 66.6422C25.6012 66.2824 24.9875 65.9985 24.3484 65.5923C21.9474 64.0662 20.3106 62.4639 18.6427 60.1998C18.6047 60.7762 18.5846 61.2855 18.5971 61.8661C18.5668 62.4164 18.5694 63.0816 18.5571 63.6419C17.6386 63.1466 16.6837 62.7003 15.7818 62.1914C15.1878 61.8562 14.4722 61.3181 13.941 60.8932C13.0625 60.1959 12.2512 59.4182 11.5174 58.5705C9.51071 56.2571 7.34569 52.4982 7.00311 49.4086C6.42716 50.1777 5.64728 51.9071 5.28247 52.8412C4.9233 52.3904 4.38297 51.482 4.10801 50.9674C1.9672 46.9607 0.809421 41.8889 1.77585 37.3989C1.93777 36.6511 2.15038 35.9152 2.41219 35.1962C2.58519 34.7272 2.82604 34.218 2.95625 33.744C2.12383 34.1381 1.36307 34.6602 0.571164 35.1273C0.393975 35.2318 0.241 35.3268 0.0505618 35.4098C-0.0473604 34.68 0.0194948 33.2758 0.0632019 32.5379C0.333266 27.6005 1.87558 22.8164 4.54082 18.6487C3.98405 17.289 4.05486 15.1338 4.39325 13.6978C4.53663 13.0894 4.88873 12.3776 5.18995 11.8234C6.52789 9.3623 8.54017 7.92952 11.2837 7.36582C11.9665 7.22549 13.2517 7.17295 13.7604 6.99993C13.9596 6.93212 15.197 5.88294 15.5217 5.64469C16.3368 5.05805 17.1803 4.51161 18.049 4.00734C19.3858 3.22104 20.8954 2.53662 22.3344 1.96387C24.7652 1.08499 27.1047 0.473543 29.6828 0.207619C30.0828 0.175258 30.4823 0.137827 30.8814 0.0954871Z"
 			fill={primary}
@@ -104,7 +199,12 @@ type LogoWordmarkProps = {
 }
 
 const LogoWordmark = ({ textColor }: LogoWordmarkProps) => (
-	<Svg width={105} height={46} viewBox="0 0 105 46" fill="none">
+	<Svg
+		width="100%"
+		height="100%"
+		viewBox="0 0 105 46"
+		fill="none"
+		preserveAspectRatio="xMidYMid meet">
 		<Path
 			d="M10.696 45.0731C8.33136 45.0731 6.56757 44.763 5.40463 44.1427C4.24169 43.5225 3.27258 42.3983 2.49728 40.7702C1.95458 39.5298 1.4894 37.514 1.10175 34.7229C0.752871 31.8931 0.57843 28.2298 0.57843 23.7331C0.57843 20.5932 0.636577 17.5889 0.752872 14.7204C0.90793 11.8518 1.12114 9.64218 1.39249 8.0916C1.70261 6.1146 2.20655 4.69969 2.90431 3.84687C3.64084 2.99404 4.55181 2.56763 5.63722 2.56763C6.60634 2.56763 7.36225 2.99404 7.90495 3.84687C8.48642 4.69969 8.89345 5.86263 9.12604 7.33569C9.35863 8.76998 9.47492 10.3593 9.47492 12.1037C9.47492 16.833 9.30048 21.6205 8.9516 26.4661C8.64148 31.3116 8.19569 35.7696 7.61422 39.8399L6.85831 38.7932C8.60272 37.5915 10.4634 36.5643 12.4404 35.7114C14.4562 34.8586 16.4138 34.1996 18.3133 33.7344C20.2515 33.2693 21.9378 33.0367 23.3721 33.0367C24.8064 33.0367 25.853 33.3274 26.512 33.9089C27.2098 34.4903 27.5586 35.3238 27.5586 36.4092C27.5586 37.4946 27.0741 38.5994 26.105 39.7236C25.1746 40.809 23.8372 41.7587 22.0928 42.5728C21.1237 43.038 19.9801 43.4644 18.6621 43.852C17.3442 44.2009 15.9874 44.4916 14.5919 44.7242C13.2351 44.9568 11.9365 45.0731 10.696 45.0731Z"
 			fill={textColor}

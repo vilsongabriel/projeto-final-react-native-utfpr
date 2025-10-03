@@ -7,7 +7,7 @@ export default function TabsLayout() {
 
 	return (
 		<Tabs
-			initialRouteName="new"
+			initialRouteName="main"
 			screenOptions={{
 				headerShown: false,
 				tabBarActiveTintColor: theme.colors.primary,
@@ -15,7 +15,7 @@ export default function TabsLayout() {
 				tabBarStyle: { backgroundColor: theme.colors.background },
 			}}>
 			<Tabs.Screen
-				name="new"
+				name="main"
 				options={{
 					title: 'Novo',
 					tabBarIcon: ({ color, size }) => (
@@ -32,8 +32,6 @@ export default function TabsLayout() {
 					),
 				}}
 			/>
-			<Tabs.Screen name="welcome" options={{ href: null }} />
-			<Tabs.Screen name="main" options={{ href: null }} />
 			<Tabs.Screen name="new-quiz" options={{ href: null }} />
 			<Tabs.Screen name="quiz" options={{ href: null }} />
 			<Tabs.Screen name="quiz-result" options={{ href: null }} />
