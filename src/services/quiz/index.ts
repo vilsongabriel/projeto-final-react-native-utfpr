@@ -66,10 +66,21 @@ const sanitizeQuestion = (question: unknown): QuizQuestion => {
 }
 
 const parseQuizPayload = (raw: string): QuizPayload => {
+	const stripCodeFences = (content: string) => {
+		const trimmed = content.trim()
+		if (!trimmed.startsWith('```')) {
+			return trimmed
+		}
+		const withoutFence = trimmed.replace(/^```(?:json)?\s*/i, '')
+		return withoutFence.replace(/\s*```$/i, '').trim()
+	}
+
+	const sanitized = stripCodeFences(raw)
+
 	let data: unknown
 
 	try {
-		data = JSON.parse(raw)
+		data = JSON.parse(sanitized)
 	} catch {
 		throw new QuizGenerationError(
 			'Não foi possível interpretar a resposta do modelo como JSON.',

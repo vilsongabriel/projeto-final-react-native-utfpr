@@ -11,6 +11,8 @@ const palette = {
 	sunset: '#F07D3A',
 	black: '#000000',
 	white: '#FFFFFF',
+	pine: '#2F7A4F',
+	crimson: '#C04747',
 }
 
 export const theme = createTheme({
@@ -26,6 +28,10 @@ export const theme = createTheme({
 		buttonText: palette.sand,
 		buttonSecondaryText: palette.cocoa,
 		buttonSecondaryBackground: palette.sand,
+		success: palette.pine,
+		successContrast: palette.sand,
+		error: palette.crimson,
+		errorContrast: palette.white,
 	},
 	spacing: {
 		none: 0,

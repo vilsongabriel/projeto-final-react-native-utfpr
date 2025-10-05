@@ -1,5 +1,4 @@
 import { RefObject, useCallback, useMemo, useRef, useState } from 'react'
-import { Alert } from 'react-native'
 import PagerView, {
 	PagerViewOnPageSelectedEvent,
 } from 'react-native-pager-view'
@@ -32,6 +31,7 @@ export type UseNewQuizScreenParams = {
 	questionAmountValues: QuestionAmountOption[]
 	timeLimitValues: TimeLimitOption[]
 	steps: StepDefinition[]
+	onStartQuiz: (payload: QuizSetupPayload) => void
 }
 
 export type NewQuizScreenState = {
@@ -52,6 +52,13 @@ export type NewQuizScreenState = {
 	onSelectTimeLimit: (value: TimeLimitOption) => void
 	onPrimaryAction: () => void
 	onEditTheme: () => void
+}
+
+export type QuizSetupPayload = {
+	theme: string
+	difficulty: DifficultyOption
+	questionAmount: QuestionAmountOption
+	timeLimit: TimeLimitOption
 }
 
 const DIFFICULTY_OPTIONS: DifficultyOption[] = [
@@ -195,6 +202,7 @@ export const useNewQuizScreen = ({
 	questionAmountValues,
 	timeLimitValues,
 	steps,
+	onStartQuiz,
 }: UseNewQuizScreenParams): NewQuizScreenState => {
 	const {
 		pagerRef,
@@ -224,13 +232,16 @@ export const useNewQuizScreen = ({
 			return
 		}
 
-		Alert.alert(
-			'Quiz em construção',
-			`Tema: ${theme || 'não informado'}\nDificuldade: ${DIFFICULTY_LABELS[selectedDifficulty]}\nQuestões: ${selectedQuestionAmount}\nTempo limite: ${formatTimeLabel(selectedTimeLimit)}`,
-		)
+		onStartQuiz({
+			theme,
+			difficulty: selectedDifficulty,
+			questionAmount: selectedQuestionAmount,
+			timeLimit: selectedTimeLimit,
+		})
 	}, [
 		goToNextStep,
 		isLastStep,
+		onStartQuiz,
 		selectedDifficulty,
 		selectedQuestionAmount,
 		selectedTimeLimit,
