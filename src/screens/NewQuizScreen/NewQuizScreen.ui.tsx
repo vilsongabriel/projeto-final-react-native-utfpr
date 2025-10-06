@@ -31,19 +31,19 @@ export const NewQuizScreenUI = ({
 	onPrimaryAction,
 	onEditTheme,
 }: NewQuizScreenUIProps) => {
-	const currentStep = steps[currentIndex]
-
 	return (
-		<Screen flex={1} paddingHorizontal="xl" gap="xl">
-			<ThemeHeader theme={theme} onEditTheme={onEditTheme} />
-			<Box flex={1} gap="l">
-				<StepInfo step={currentStep} />
-				<PagerView
-					ref={pagerRef}
-					initialPage={0}
-					style={styles.pager}
-					onPageSelected={handlePageSelected}>
-					<Box key="difficulty" flex={1} justifyContent="center" gap="m">
+		<Screen flex={1} gap="xl">
+			<Box paddingHorizontal="xl">
+				<ThemeHeader theme={theme} onEditTheme={onEditTheme} />
+			</Box>
+			<PagerView
+				ref={pagerRef}
+				initialPage={0}
+				style={styles.pager}
+				onPageSelected={handlePageSelected}>
+				<Box key="difficulty" flex={1} paddingHorizontal="xl" gap="l">
+					<StepInfo step={steps[0]} />
+					<Box flex={1} justifyContent="center" gap="s">
 						{difficultyOptions.map(option => (
 							<OptionCard
 								key={option.value}
@@ -53,7 +53,10 @@ export const NewQuizScreenUI = ({
 							/>
 						))}
 					</Box>
-					<Box key="quantity" flex={1} justifyContent="center" gap="m">
+				</Box>
+				<Box key="quantity" flex={1} paddingHorizontal="xl" gap="l">
+					<StepInfo step={steps[1]} />
+					<Box flex={1} justifyContent="center" gap="s">
 						{questionAmountOptions.map(option => (
 							<OptionCard
 								key={option.value}
@@ -63,7 +66,10 @@ export const NewQuizScreenUI = ({
 							/>
 						))}
 					</Box>
-					<Box key="timeLimit" flex={1} justifyContent="center" gap="m">
+				</Box>
+				<Box key="timeLimit" flex={1} paddingHorizontal="xl" gap="l">
+					<StepInfo step={steps[2]} />
+					<Box flex={1} justifyContent="center" gap="s">
 						{timeLimitOptions.map(option => (
 							<OptionCard
 								key={option.value}
@@ -73,9 +79,9 @@ export const NewQuizScreenUI = ({
 							/>
 						))}
 					</Box>
-				</PagerView>
-			</Box>
-			<Box gap="m">
+				</Box>
+			</PagerView>
+			<Box gap="m" paddingHorizontal="xl">
 				<StepIndicators steps={steps} currentIndex={currentIndex} />
 				<Text textAlign="center" color="subtleText">
 					{currentIndex + 1} de {steps.length}

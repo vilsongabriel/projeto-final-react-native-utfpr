@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
 	},
 	description: {
 		marginTop: 4,
+		fontSize: 14,
 	},
 })
 
@@ -32,17 +33,20 @@ export function OptionCard<T>({
 			accessibilityRole="button">
 			<Card
 				elevated={false}
-				borderWidth={selected ? 2 : 1}
-				borderColor={selected ? 'accent' : 'muted'}
-				backgroundColor={selected ? 'buttonSecondaryBackground' : 'surface'}
-				padding="m"
-				gap="s">
-				<Text variant="subtitle" color={selected ? 'accent' : 'text'}>
+				borderWidth={2}
+				borderRadius="m"
+				borderColor={selected ? 'accent' : 'primary'}
+				backgroundColor="buttonSecondaryBackground"
+				paddingVertical="s"
+				paddingHorizontal="l">
+				<Text
+					color={selected ? 'accent' : 'text'}
+					fontSize={22}
+					lineHeight={30}>
 					{label}
 				</Text>
 				{description ? (
 					<Text
-						variant="body"
 						color={selected ? 'accent' : 'subtleText'}
 						style={styles.description}>
 						{description}
