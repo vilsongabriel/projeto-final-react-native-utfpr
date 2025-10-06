@@ -1,50 +1,73 @@
-# Welcome to your Expo app 👋
+# Sobre
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Este aplicativo foi desenvolvido como trabalho final da disciplina de React Native do professor **Vinicius Oliveira** para a **Pós-Graduação em Programação para Dispositivos Móveis** da **UTFPR**.
 
-## Get started
+Aplicativo de quiz interativo com perguntas geradas por IA. Escolha um tema, configure a dificuldade, quantidade de questões e tempo limite para testar seus conhecimentos!
 
-1. Install dependencies
+Lion é um app React Native desenvolvido com Expo que permite criar quizzes personalizados sobre qualquer tema usando a API do Google Gemini. O app oferece:
 
-   ```bash
-   npm install
-   ```
+- **Quizzes personalizados** - Escolha qualquer tema para gerar perguntas
+- **Configuração flexível** - Defina dificuldade (Fácil, Médio, Difícil), quantidade de questões (5, 10, 15) e tempo limite
+- **Feedback visual** - Animações suaves indicam respostas corretas e incorretas
+- **Explicações detalhadas** - Veja a explicação de cada resposta após responder
+- **Resumo final** - Confira sua pontuação e desempenho ao final do quiz
 
-2. Start the app
+## Como Rodar
 
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+### 1. Instale as dependências
 
 ```bash
-npm run reset-project
+npm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### 2. Configure a API Key do Gemini
 
-## Learn more
+Crie um arquivo `.env.local` na raiz do projeto com sua chave da API:
 
-To learn more about developing your project with Expo, look at the following resources:
+```env
+EXPO_PUBLIC_GEMINI_KEY=sua_chave_api_aqui
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+> **Como obter a API Key:**
+>
+> 1. Acesse [Google AI Studio](https://aistudio.google.com/app/apikey)
+> 2. Faça login com sua conta Google
+> 3. Clique em "Get API Key" ou "Create API Key"
+> 4. Copie a chave gerada e cole no arquivo `.env.local`
 
-## Join the community
+### 3. Inicie o app
 
-Join our community of developers creating universal apps.
+```bash
+npm start
+```
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Depois escolha onde rodar:
+
+- Pressione `a` para abrir no **Android Emulator**
+- Pressione `i` para abrir no **iOS Simulator**
+- Escaneie o QR Code com o app **Expo Go** no seu celular
+
+## 🛠 Tecnologias
+
+- **React Native** - Framework mobile
+- **Expo** - Tooling e desenvolvimento
+- **TypeScript** - Tipagem estática
+- **Expo Router** - Navegação baseada em arquivos
+- **React Native Reanimated** - Animações performáticas
+- **Google Gemini API** - Geração de quizzes com IA
+
+## 📝 Estrutura do Projeto
+
+```
+src/
+├── app/              # Rotas do app (Expo Router)
+├── components/       # Componentes reutilizáveis
+├── screens/          # Telas principais
+│   ├── WelcomeScreen/
+│   ├── MainScreen/
+│   ├── NewQuizScreen/
+│   └── QuizScreen/
+├── services/         # Integração com APIs
+├── hooks/            # Custom hooks
+└── theme/            # Tema e estilos
+```
